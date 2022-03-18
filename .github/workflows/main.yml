@@ -28,6 +28,9 @@ jobs:
         
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag ${{secrets.DOCKER_HUB_USERNAME}}/dockertest:${{env.TAG}}
+
+    - name: Run the unit tests
+      run: docker run -it --rm --entrypoint "/usr/local/bin/python3" ${{secrets.DOCKER_HUB_USERNAME}}/dockertest:${{env.TAG}} -m unittest test.py
       
     - name: Docker Push
       run: docker push ${{secrets.DOCKER_HUB_USERNAME}}/dockertest:${{env.TAG}}
