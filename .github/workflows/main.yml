@@ -19,15 +19,26 @@ jobs:
       run: |
         echo "TAG=$(date +%s)" >> ${GITHUB_ENV}
     
-    - name: docker login
-      env:
-        DOCKER_USER: ${{secrets.DOCKER_HUB_USERNAME}}
-        DOCKER_PASSWORD: ${{secrets.DOCKER_HUB_ACCESS_TOKEN}}
-      run:
-        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+#    - name: docker login
+#      env:
+#        DOCKER_USER: ${{secrets.DOCKER_HUB_USERNAME}}
+#        DOCKER_PASSWORD: ${{secrets.DOCKER_HUB_ACCESS_TOKEN}}
+#      run:
+#        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
         
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag ${{secrets.DOCKER_HUB_USERNAME}}/dockertest:${{env.TAG}}
       
+#    - name: Docker Push
+#      run: docker push ${{secrets.DOCKER_HUB_USERNAME}}/dockertest:${{env.TAG}}
+      
+    - name: Docker login 2
+      uses: docker/login-actions@v1
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Docker Push
-      run: docker push ${{secrets.DOCKER_HUB_USERNAME}}/dockertest:${{env.TAG}}
+      run: docker push billhpe/dockertest:latest
+      
