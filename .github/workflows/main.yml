@@ -26,8 +26,8 @@ jobs:
 #      run:
 #        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
         
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag ${{secrets.DOCKER_HUB_USERNAME}}/dockertest:${{env.TAG}}
+#    - name: Build the Docker image
+#      run: docker build . --file Dockerfile --tag ${{secrets.DOCKER_HUB_USERNAME}}/dockertest:${{env.TAG}}
       
 #    - name: Docker Push
 #      run: docker push ${{secrets.DOCKER_HUB_USERNAME}}/dockertest:${{env.TAG}}
@@ -39,6 +39,9 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag ghrc.io/billhpe/dockertest:${{env.TAG}}
+      
     - name: Docker Push
-      run: docker push billhpe/dockertest:latest
+      run: docker push ghrc.io/billhpe/dockertest:latest
       
