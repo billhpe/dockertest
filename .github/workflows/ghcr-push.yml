@@ -32,10 +32,10 @@ jobs:
     - name: Docker Push
       run: docker push ghcr.io/billhpe/dockertest:${{env.TAG}}
       
-push:
-  needs: build
-  runs-on: ubuntu-latest
-  steps:
+  push:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
     -name: dump vars
       run: echo "$GITHUB_CONTEXT"
       
