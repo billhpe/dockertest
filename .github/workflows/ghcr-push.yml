@@ -29,13 +29,19 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag ghcr.io/billhpe/dockertest:${{env.TAG}}
       
-    - name: Docker Push
-      run: docker push ghcr.io/billhpe/dockertest:${{env.TAG}}
+#    - name: Docker Push
+#      run: docker push ghcr.io/billhpe/dockertest:${{env.TAG}}
       
-  push:
+  do_push:
     needs: build
     runs-on: ubuntu-latest
+
     steps:
-    -name: dump vars
+    - uses: actions/checkout@v2
+    
+    - name: Dump GITHUB_CONTEXT
       run: echo "$GITHUB_CONTEXT"
+      
+    - name: Docker Push
+      run: docker push ghcr.io/billhpe/dockertest:${{env.TAG}}
       
