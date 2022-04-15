@@ -37,11 +37,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    
+    - name: Docker login 2
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}    
+
     - name: Dump GITHUB_CONTEXT
       run: echo "$GITHUB_CONTEXT"
-      
+
+    - name: Dump GitHub env - toJson
+      env:
+        GITHUB_CONTEXT2: ${{ toJson(env) }}
+      run: echo "$GITHUB_CONTEXT2"
+
+    - name: Dump GitHub context - toJson
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: echo "$GITHUB_CONTEXT"
+
     - name: Docker Push
       run: docker push ghcr.io/billhpe/dockertest:${{env.TAG}}
       
